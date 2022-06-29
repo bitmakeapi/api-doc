@@ -1,14 +1,14 @@
 ---
-title: Freemex Api Documentation
+title: BitMake Api Documentation
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
 
 meta:
   - name: description
-    content: Documentation for the freemex API
+    content: Documentation for the bitmake API
   - name: keywords
-    content: freemex,API,Documentation
+    content: bitmake,API,Documentation
 
 search: true
 
@@ -17,7 +17,7 @@ code_clipboard: true
 
 # Introduction
 
-Welcome to the FreeMex API documentation. We offer complete REST, Websocket, and FreeMex APIs to suit your algorithmic trading needs.
+Welcome to the BitMake API documentation. We offer complete REST, Websocket, and BitMake APIs to suit your algorithmic trading needs.
 ## Public definitions
 ### Terminology
 
@@ -139,7 +139,7 @@ For authenticated requests, the following headers should be sent with the reques
 
 HTTP-based API with full trading and asset management functionality, with public orderbook and trades data as well as private account data and order management.
 
-REST endpoint URL: https://api.freemex.com/
+REST endpoint URL: https://api.bitmake.com/
 
 Requests and responses use JSON.
 
@@ -732,7 +732,7 @@ Streaming API with the most up-to-date market and account order data. With this 
 
 #### Websocket endpoint URL
 
-wss://api.freemex.com/t/v1/ws
+wss://api.bitmake.com/t/v1/ws
 
 #### URL parameters
 
@@ -1275,7 +1275,7 @@ A | string | best ask quantity
 
 #### Websocket endpoint URL
 
-wss://api.freemex.com/t/v1/ws
+wss://api.bitmake.com/t/v1/ws
 
 #### URL parameters
 
