@@ -490,8 +490,8 @@ executeLessPrice | string | no |
 ```javascript
 {
     "orderId": 783738728209001,
-    "cancelStatus": 0, 
-    "orderStatus": 0, 
+    "cancelStatus": "SUCCESS",
+    "orderStatus": "CANCELLED",
     "executedQuantity": "0", 
     "executedAmount": "0"
 }
@@ -518,17 +518,11 @@ orderId | long | no | order id
 [
     {
         "orderId": 783738728209001, 
-        "cancelStatus": "SUCCESS", 
-        "orderStatus": "CANCELLED", 
-        "executedQuantity": "0", 
-        "executedAmount": "0"
+        "cancelStatus": "SUCCESS"
     }, 
     {
         "orderId": 783738728209002, 
-        "cancelStatus": "SUCCESS", 
-        "orderStatus": "CANCELLED", 
-        "executedQuantity": "0", 
-        "executedAmount": "0"
+        "cancelStatus": "SUCCESS"
     }
 ]
 ```
