@@ -220,7 +220,7 @@ Parameter | Type | Required | Description
 --------- | ------- | ------- | -----------
 symbol | string | true | symbol name
 dumpScale | integer | false | merged price precision 
-limit | integer | false | limit numbers
+depthLevel | integer | false | max 100, default 20
 
 ### Get kline/candlestick data
 
