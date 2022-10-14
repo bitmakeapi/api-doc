@@ -10,6 +10,9 @@ meta:
   - name: keywords
     content: bitmake,API,Documentation
 
+toc_footers:
+  - <a href='https://github.com/bitmakeapi/sdk-java'>BitMake Java SDK @ Github</a>
+
 search: true
 
 code_clipboard: true
@@ -49,22 +52,22 @@ CONDITION_LIMIT | Condition Limit
 
 enum | description
 ----- | -------
-NEW | NEW
-PARTIALLY_FILLED | PARTIALLY_FILLED
-FILLED | FILLED
-CANCELLED | CANCELLED
-PENDING_CANCEL | PENDING_CANCEL
-REJECTED | REJECTED
-PENDING_NEW | PENDING_NEW
+NEW | New order
+PARTIALLY_FILLED | Order has partially filled
+FILLED | Order has fully filled
+CANCELLED | Order cancelled
+PENDING_CANCEL | Pending cancel order
+REJECTED | Order rejected
+PENDING_NEW | Pending create new order
 
 #### Order cancel status (cancelStatus)
 
 enum | description
 ----- | -------
-SUCCESS | SUCCESS
-ORDER_IN_CANCEL | ORDER_IN_CANCEL
-ORDER_NOT_EXIST | ORDER_NOT_EXIST
-ORDER_FILLED | ORDER_FILLED
+SUCCESS | Order has cancelled success
+ORDER_IN_CANCEL | Order in cancel
+ORDER_NOT_EXIST | Order not exist
+ORDER_FILLED | Order has filled
 
 
 #### Time in force (timeInForce)
@@ -101,7 +104,7 @@ When a rate limit is exceeded, a status of 429 Too Many Requests will be returne
 
 ## Authentication
 
-REST and WebSocket are the same authentication method.
+REST and WebSocket (Private Channels) are the same authentication method.
 
 ### APIKey
 * Create an APIKey on the website before signing any requests. After creating an APIKey, keep the following information safe:  
@@ -143,7 +146,90 @@ REST endpoint URL: https://api.bitmake.com/
 
 Requests and responses use JSON.
 
+## Public Data
+### Get base info
+
+> response example:
+
+```javascript
+{
+    serverTime: 1665645887795, // current server timestamp
+    clientIp: "52.253.18.220" // current client ip
+}
+```
+
+Get server and client base info
+
+#### Request path
+
+`GET /t/v1/info`
+
+#### Request parameters
+
+Parameter | Type | Required | Description
+--------- | ------- | ------- | -----------
+
+
+### Get symbols
+
+> response example:
+
+```javascript
+[
+    {
+        "symbol": "TRX-PERP", // symbol name
+        "baseToken": "TRX", // base token name
+        "quoteToken": "USD", // quote token name
+        "category": 3, // 1 - spot symbol 2 - option symbol 3 - contract symbol
+        "contractConfig": { // optional when category is 3
+            "isReverse": false, // indicates is it a reverse contract
+            "isPerpetual": true, // indicates is it a perpetual contract
+            "multiplier": "1", // contract multiplier
+            "displayIndexToken": "TRXUSD", // index token name
+            "marginToken": "USD", // margin token name
+            "marginTokenPrecision": 5 // margin token price precision
+        }, 
+        "pricePrecision": 5, // symbol price precision
+        "priceStep": 1, // symbol price precision step
+        "quantityPrecision": 0, // symbol quantity precision
+        "quantityStep": 1, // symbol quantity precision step
+        "minQuantity": "1", // min trade quantity
+        "amountPrecision": 5, // amount precision (pricePrecision + quantityPrecision)
+        "amountStep": 1, 
+        "minAmount": "1", // min trade amount
+        "digitMerge": 3 // max merged price precision
+    },
+    {
+        "symbol": "AVAX_USD", 
+        "baseToken": "AVAX", 
+        "quoteToken": "USD", 
+        "category": 1, 
+        "pricePrecision": 2, 
+        "priceStep": 1, 
+        "quantityPrecision": 1, 
+        "quantityStep": 1, 
+        "minQuantity": "0.1", 
+        "amountPrecision": 3, 
+        "amountStep": 1, 
+        "minAmount": "1", 
+        "digitMerge": -1
+    }
+]
+```
+
+Get all symbol info
+
+#### Request path
+
+`GET /u/v1/base/symbols`
+
+#### Request parameters
+
+Parameter | Type | Required | Description
+--------- | ------- | ------- | -----------
+
 ## Markets
+
 ### Get index
 
 > response example:
@@ -722,7 +808,7 @@ Streaming API with the most up-to-date market and account order data. With this 
 
 #### Websocket endpoint URL
 
-wss://api.bitmake.com/t/v1/ws
+wss://ws.bitmake.com/t/v1/ws
 
 #### URL parameters
 
@@ -1265,7 +1351,7 @@ A | string | best ask quantity
 
 #### Websocket endpoint URL
 
-wss://api.bitmake.com/t/v1/ws
+wss://ws.bitmake.com/t/v1/ws
 
 #### URL parameters
 
@@ -1291,7 +1377,11 @@ Requests and responses use JSON.
 * The websocket server will send a ping frame every 3 minutes. If the websocket server does not receive a pong frame back from the connection within a 6 minute period, the connection will be disconnected. 
 * After the client connects to the server, it needs to periodically send a ping frame to the server, and the server will reply to the client with a pong frame after receiving the message.
 
-#### Subscription format
+<aside class="notice">
+    You can subscribe to all public channel topic on an authenticated connection.
+</aside>
+
+#### Push data json format
 
 | Parameter   | Type           | Description |e.g |
 | ----- | -------------------------------------- | ----------- | ----------- |
@@ -1300,7 +1390,7 @@ Requests and responses use JSON.
 | s  | integer | push sequence number    |  |
 | d | json object  | push data      | 
 
-#### Request event type
+#### Push data event type
 
 | event type  | description  |
 | ------------ | ------------ |
@@ -1521,4 +1611,35 @@ Errors consist of two parts: an error code and a message. Codes are universal, b
 
 ## REST
 
+Code | Description
+--------- | -----------
+10011 | Request parameter is empty
+10012  | Invalid request parameter
+10013 | Invalid client order id
+10014 | Invalid order side
+10015 | Invalid order type
+10016 | Invalid timestamp
+10017 | Invalid symbol
+10019 | Invalid order price
+10020 | Invalid quantity
+10022 | Invalid match type
+10023 | Invalid permission
+10025 | Requests too frequent
+10026 | Forbidden create new order
+10027 | Forbidden call api
+
+
+
 ## WebSocket
+Code | Description
+--------- | -----------
+11100 | Symbol invalid
+11101 | Kline type invalid
+11102 | Event invalid
+11103 | Topic invalid
+11104 | Broker invalid
+11105 | Event not support
+11107 | Depth not found
+11109 | Too mayn symbol 
+11113 | Top type invalid
+11200 | Bad request
